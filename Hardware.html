@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Welcome to BrauBar’s documentation! &mdash; Braubar 0.1 Dokumentation</title>
+  <title>Hardware Requirements &mdash; Braubar 0.1 Dokumentation</title>
   
 
   
@@ -30,8 +30,9 @@
   
 
   
-    <link rel="top" title="Braubar 0.1 Dokumentation" href="#"/>
-        <link rel="next" title="Hardware Requirements" href="Hardware.html"/> 
+    <link rel="top" title="Braubar 0.1 Dokumentation" href="index.html"/>
+        <link rel="next" title="Installation" href="install.html"/>
+        <link rel="prev" title="Welcome to BrauBar’s documentation!" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -49,7 +50,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> Braubar
+            <a href="index.html" class="icon icon-home"> Braubar
           
 
           
@@ -83,8 +84,8 @@
           
             
             
-                <ul>
-<li class="toctree-l1"><a class="reference internal" href="Hardware.html">Hardware Requirements</a></li>
+                <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Hardware Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="structure.html">Structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="raspberry.html">Raspberry Dokumentation</a></li>
@@ -102,7 +103,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="#">Braubar</a>
+        <a href="index.html">Braubar</a>
       </nav>
 
 
@@ -117,13 +118,13 @@
 
 <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="#">Docs</a> &raquo;</li>
+    <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Welcome to BrauBar&#8217;s documentation!</li>
+    <li>Hardware Requirements</li>
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/Hardware.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -133,61 +134,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-braubar-s-documentation">
-<h1>Welcome to BrauBar&#8217;s documentation!<a class="headerlink" href="#welcome-to-braubar-s-documentation" title="Link zu dieser Überschrift">¶</a></h1>
-<p>Contents:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Hardware.html">Hardware Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#raspberry-pi">Raspberry Pi</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="structure.html">Structure</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="structure.html#brewdaemon">Brewdaemon</a></li>
-<li class="toctree-l2"><a class="reference internal" href="structure.html#socketserver">Socketserver</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="raspberry.html">Raspberry Dokumentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="raspberry.html#requierements">Requierements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="raspberry.html#actions">Actions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="Brauen.html">Brauen</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Brauen.html#arbeitsschritte">Arbeitsschritte</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Brauen.html#pid-von">PID von</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link zu dieser Überschrift">¶</a></h1>
+  <div class="section" id="hardware-requirements">
+<span id="hardware-requirements"></span><h1>Hardware Requirements<a class="headerlink" href="#hardware-requirements" title="Link zu dieser Überschrift">¶</a></h1>
+<p>Note: BrewBar needs a bunch of hardware to run porperly.
+Here is the list of my hardware:</p>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><span>Stichwortverzeichnis</span></a></li>
-<li><a class="reference internal" href="py-modindex.html"><span>Modulindex</span></a></li>
-<li><a class="reference internal" href="search.html"><span>Suche</span></a></li>
+<li>Arduino Uno with Ethernet Shield 2 + PoE Module</li>
+<li>Raspberry Pi 2 with 7&#8221; Touch Display</li>
+<li>Temperature sensor ds18b20</li>
+<li>PoE enabled Switch</li>
+<li>ethernet wires</li>
+<li>LAN enabled power-switch EG-PM2-LAN</li>
+<li>SD Memory Card at least 4 GB</li>
 </ul>
-<div class="section" id="features">
-<h2>Features<a class="headerlink" href="#features" title="Link zu dieser Überschrift">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
-<li>controls temperature with a network-enabled Arduino.</li>
-<li>uses a PID-Controller</li>
-<li>helps to simplify your brewing process</li>
-<li>displays temperature graph</li>
-</ul>
-</div></blockquote>
-<p>We like to brew!</p>
-</div>
-<div class="section" id="links">
-<h2>Links<a class="headerlink" href="#links" title="Link zu dieser Überschrift">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="https://github.com/ofesseler/braubar-pi/zipball/master">https://github.com/ofesseler/braubar-pi/zipball/master</a></li>
-<li><a class="reference external" href="https://github.com/ofesseler/braubar-pi/tarball/master">https://github.com/ofesseler/braubar-pi/tarball/master</a></li>
-<li><a class="reference external" href="https://github.com/ofesseler/braubar-pi">https://github.com/ofesseler/braubar-pi</a></li>
-</ul>
-</div>
 </div>
 
 
@@ -197,8 +156,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Hardware.html" class="btn btn-neutral float-right" title="Hardware Requirements" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to BrauBar’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

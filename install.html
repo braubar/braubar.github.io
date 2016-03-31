@@ -31,8 +31,8 @@
 
   
     <link rel="top" title="Braubar 0.1 Dokumentation" href="index.html"/>
-        <link rel="next" title="Raspberry Dokumentation" href="raspberry.html"/>
-        <link rel="prev" title="Welcome to BrauBar’s documentation!" href="index.html"/> 
+        <link rel="next" title="Structure" href="structure.html"/>
+        <link rel="prev" title="Hardware Requirements" href="Hardware.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -85,12 +85,20 @@
             
             
                 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Hardware.html">Hardware Requirements</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#hardware-requirements">Hardware Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#software-requirements">Software Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#supervisord">Supervisord</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#raspberry-pi">Raspberry Pi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#debian-and-packages">Debian and Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#x-window-system">X Window System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#auto-login">Auto Login</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#braubar-installation">Braubar installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-and-configure-dnsmasq">Install and configure dnsmasq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config-braubar-start-with-supervisor">Config Braubar start with Supervisor</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">Structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="raspberry.html">Raspberry Dokumentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Brauen.html">Brauen</a></li>
 </ul>
@@ -139,73 +147,140 @@
             
   <div class="section" id="installation">
 <span id="installation"></span><h1>Installation<a class="headerlink" href="#installation" title="Link zu dieser Überschrift">¶</a></h1>
-<div class="section" id="hardware-requirements">
-<span id="hardware-requirements"></span><h2>Hardware Requirements<a class="headerlink" href="#hardware-requirements" title="Link zu dieser Überschrift">¶</a></h2>
-<p>Note: BrewBar needs a bunch of hardware to run porperly.
-Here is the list of my hardware:</p>
-<ul class="simple">
-<li>Arduino Uno with Ethernet Shield 2 + PoE Module</li>
-<li>Raspberry Pi 2 with 7&#8221; Touch Display</li>
-<li>Temperature sensor ds18b20</li>
-<li>PoE enabled Switch</li>
-<li>ethernet wires</li>
-<li>LAN enabled power-switch EG-PM2-LAN</li>
-</ul>
+<p>This installation guide will lead you through the whole process of installation and starting up your personal Braubar.</p>
+<p>At first we begin with the installation of the Raspberry Pi and related software.</p>
+<div class="section" id="raspberry-pi">
+<span id="raspberry-pi"></span><h2>Raspberry Pi<a class="headerlink" href="#raspberry-pi" title="Link zu dieser Überschrift">¶</a></h2>
+<p>A common and small distribution is the raspbian image. Download it and copy it to your sd card. For the copy enshure that the device is not mounted. You need to be root.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>dd <span class="nv">bs</span><span class="o">=</span>4M <span class="k">if</span><span class="o">=</span>/tmp/2016-03-18-raspbian-jessie-lie.img <span class="nv">of</span><span class="o">=</span>/dev/mmcblk0 <span class="o">&amp;&amp;</span> sync
+</pre></div>
 </div>
-<div class="section" id="software-requirements">
-<span id="software-requirements"></span><h2>Software Requirements<a class="headerlink" href="#software-requirements" title="Link zu dieser Überschrift">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">sync</span></code>enshures that all data will be written to the sd card.
+You can find the appropriate image on <a class="reference external" href="https://www.raspberrypi.org/downloads/">https://www.raspberrypi.org/downloads/</a></p>
+<p>After you finished with sync, mount your sd card under <code class="docutils literal"><span class="pre">/mnt</span></code></p>
+<p>Open <code class="docutils literal"><span class="pre">/mnt/boot/config.txt</span></code> and add the following lines at the end</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># rotate display</span>
+<span class="n">lcd_rotate</span><span class="o">=</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>For IP settings modify <code class="docutils literal"><span class="pre">/mnt/etc/dhcpdc.conf</span></code> to configure your network settings.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>interface eth0
+static ip_address=192.168.3.100
+static routers=192.168.3.1
+static domain_server=8.8.8.8
+</pre></div>
+</div>
+<p>Adjust IP settings to your needs. Now unmount your sd card and get your Pi running. Afterwards you need to get access to the Pi, my favorite is ssh.</p>
+<p>Open <code class="docutils literal"><span class="pre">raspi-conf</span></code> and select entry <code class="docutils literal"><span class="pre">Expand</span> <span class="pre">Filesystem</span></code> to expand the image to the full size of your sd card and reboot. Othervise there is not enough space left.</p>
+<div class="section" id="debian-and-packages">
+<span id="debian-and-packages"></span><h3>Debian and Packages<a class="headerlink" href="#debian-and-packages" title="Link zu dieser Überschrift">¶</a></h3>
+<p>The following software will be installed:</p>
 <ul class="simple">
 <li>supervisor</li>
 <li>python3</li>
 <li>pip</li>
+<li>iceweasel</li>
+<li>xinit</li>
+<li>matchbox</li>
 </ul>
-<p>Debian 8:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>apt-get install supervisor python3 python3-pip
+<p>Debian 8:
+After boot run a update and then install the required software</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>apt-get update <span class="o">&amp;&amp;</span> apt-get install supervisor python3 python3-pip iceweasel xinit matchbox
 </pre></div>
 </div>
-<p>As easy as it can be:
-Clone these two Repositories</p>
-<ul class="simple">
-<li>https://github.com/ofesseler/braubar-pi.git</li>
-<li>https://github.com/ofesseler/braubar-temp.git</li>
-</ul>
-<p>then upload the code of Repository <code class="docutils literal"><span class="pre">braubar-temp</span></code> to your Arduino Uno with Ethernet-Shield on top and a ds18b20 sensor.</p>
-<p>to install the needed python requirements run <code class="docutils literal"><span class="pre">pip3</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span></code></p>
-<p>copy iceweasel desktop-entry to <code class="docutils literal"><span class="pre">.config/autostart</span></code> and change <code class="docutils literal"><span class="pre">Exec=iceweasel</span> <span class="pre">u%</span></code> to <code class="docutils literal"><span class="pre">Exec=iceweasel</span> <span class="pre">http://localhost:5000</span></code>
-then iceweasel will start everytime you start your raspberry. 56</p>
 </div>
-<div class="section" id="supervisord">
-<span id="supervisord"></span><h2>Supervisord<a class="headerlink" href="#supervisord" title="Link zu dieser Überschrift">¶</a></h2>
+<div class="section" id="x-window-system">
+<span id="x-window-system"></span><h3>X Window System<a class="headerlink" href="#x-window-system" title="Link zu dieser Überschrift">¶</a></h3>
+<p>create <code class="docutils literal"><span class="pre">.xinitrc</span></code> file in <code class="docutils literal"><span class="pre">home</span></code> folder</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>matchbox-window-manager &amp;
+exec /usr/bin/iceweasel http://localhost:5000
+</pre></div>
+</div>
+<p>To start iceweasel in fullscreen mode it is neccesary to start it one, enter fullscreen mode and exit. Then it it will be saved in your profile. Another option is to create your own profile, but I won&#8217;t handle that here.</p>
+</div>
+<div class="section" id="auto-login">
+<span id="auto-login"></span><h3>Auto Login<a class="headerlink" href="#auto-login" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Edit file at <code class="docutils literal"><span class="pre">/etc/systemd/system/getty.target.wants/getty&#64;tty1.service</span></code> and change <code class="docutils literal"><span class="pre">ExecStart=</span></code> line in section <code class="docutils literal"><span class="pre">[Service]</span></code> to this</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>ExecStart=-/sbin/agetty -a pi %I $TERM
+</pre></div>
+</div>
+<p>To get X with iceweasel started automatically add the following snippet to the end of <code class="docutils literal"><span class="pre">~/.bash_login</span></code></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>[[ -z $DISPLAY &amp;&amp; $(tty) == /dev/tty1 ]] &amp;&amp; exec startx
+</pre></div>
+</div>
+<p>Since we have no window manager which runs in systemd it is neccesary to set <code class="docutils literal"><span class="pre">multi-user.target</span></code> as default</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>systemctl set-default multi-user.target
+</pre></div>
+</div>
+<p>But be careful, now you can&#8217;t login to anything other than the iceweasel application. Except you do a remote login.</p>
+</div>
+<div class="section" id="braubar-installation">
+<span id="braubar-installation"></span><h3>Braubar installation<a class="headerlink" href="#braubar-installation" title="Link zu dieser Überschrift">¶</a></h3>
+<p>Download braubar-pi to you Pi</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>wget https://github.com/braubar/braubar-pi/archive/master.zip
+</pre></div>
+</div>
+<p>and unzip it e.g. to your home folder</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>unzip master.zip <span class="o">&amp;&amp;</span> rm master.zip <span class="o">&amp;&amp;</span> <span class="nb">cd</span> braubar-pi-master
+</pre></div>
+</div>
+<p>to install the needed python requirements run as root</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>pip3 install -r requirements.txt
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-and-configure-dnsmasq">
+<span id="install-and-configure-dnsmasq"></span><h3>Install and configure dnsmasq<a class="headerlink" href="#install-and-configure-dnsmasq" title="Link zu dieser Überschrift">¶</a></h3>
+<p>If there is a DHCP Server already running then please change IP settings and ignore this section.</p>
+<p>First install dnsmasq on your system.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>apt-get install dnsmasq
+</pre></div>
+</div>
+<p>There is a preconfigured file for dnsmasq for Braubar. <code class="docutils literal"><span class="pre">$BRAUBAR_HOME/install/dnsmasq.conf</span></code></p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
+ln -s /home/pi/braubar-pi-master/install/dnsmasq.conf /etc/dnsmasq.conf
+</pre></div>
+</div>
+</div>
+<div class="section" id="config-braubar-start-with-supervisor">
+<span id="config-braubar-start-with-supervisor"></span><h3>Config Braubar start with Supervisor<a class="headerlink" href="#config-braubar-start-with-supervisor" title="Link zu dieser Überschrift">¶</a></h3>
 <p>Adjust paths to your configuration!</p>
 <p>Create link to config in /etc/supervisor/conf.d/braubar.conf</p>
-<p><code class="docutils literal"><span class="pre">ln</span> <span class="pre">-s</span> <span class="pre">$BRAUBAR_HOME/config/braubar.conf</span> <span class="pre">/etc/supervisor/conf.d/braubar.conf</span></code></p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>ln -s <span class="nv">$BRAUBAR_HOME</span>/install/braubar.conf /etc/supervisor/conf.d/braubar.conf
+</pre></div>
+</div>
 <div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[program:braubar]</span>
-<span class="na">command</span><span class="o">=</span><span class="s">./braubar</span>
-<span class="na">directory</span><span class="o">=</span><span class="s">/home/oli/dev/braubar-pi/bin</span>
+<span class="na">command</span><span class="o">=</span><span class="s">/home/pi/braubar-pi-master/bin/braubar</span>
+<span class="na">directory</span><span class="o">=</span><span class="s">/home/pi/braubar-pi-master/bin</span>
 <span class="na">loglevel</span><span class="o">=</span><span class="s">warning</span>
 <span class="na">process_name</span><span class="o">=</span><span class="s">%(program_name)s</span>
 <span class="na">autostart</span><span class="o">=</span><span class="s">true</span>
 <span class="na">autorestart</span><span class="o">=</span><span class="s">unexpected</span>
 <span class="na">startsecs</span><span class="o">=</span><span class="s">10</span>
 <span class="na">startretries</span><span class="o">=</span><span class="s">3</span>
+<span class="na">stopasgroup</span><span class="o">=</span><span class="s">true</span>
 <span class="na">redirect_stderr</span><span class="o">=</span><span class="s">false</span>
-<span class="na">stdout_logfile</span><span class="o">=</span><span class="s">$CWD/../log/braubar.log</span>
+<span class="na">stdout_logfile</span><span class="o">=</span><span class="s">/home/pi/braubar-pi-master/log/braubar.log</span>
 <span class="na">stdout_logfile_maxbytes</span><span class="o">=</span><span class="s">1MB</span>
 <span class="na">stdout_logfile_backups</span><span class="o">=</span><span class="s">10</span>
 <span class="na">stdout_capture_maxbytes</span><span class="o">=</span><span class="s">1MB</span>
 <span class="na">stdout_events_enabled</span><span class="o">=</span><span class="s">false</span>
-<span class="na">stderr_logfile</span><span class="o">=</span><span class="s">$CWD/../log/braubar.err</span>
+<span class="na">stderr_logfile</span><span class="o">=</span><span class="s">/home/pi/braubar-pi-master/log/braubar.err</span>
 <span class="na">stderr_logfile_maxbytes</span><span class="o">=</span><span class="s">1MB</span>
 <span class="na">stderr_logfile_backups</span><span class="o">=</span><span class="s">10</span>
 <span class="na">stderr_capture_maxbytes</span><span class="o">=</span><span class="s">1MB</span>
 <span class="na">stderr_events_enabled</span><span class="o">=</span><span class="s">false</span>
-<span class="na">environment</span><span class="o">=</span><span class="s">A=&quot;1&quot;,B=&quot;2&quot;</span>
 <span class="na">serverurl</span><span class="o">=</span><span class="s">AUTO</span>
 </pre></div>
 </div>
 <p>reread and restart supervisr and show status
 <code class="docutils literal"><span class="pre">supervisorctl</span> <span class="pre">reread</span> <span class="pre">&amp;&amp;</span> <span class="pre">supervisorctl</span> <span class="pre">reload</span> <span class="pre">&amp;&amp;</span> <span class="pre">supervisorctl</span> <span class="pre">status</span></code></p>
 <p>control log in <code class="docutils literal"><span class="pre">/var/log/supervisor/supervisor.log</span></code></p>
+<p>#arduino</p>
+<ul class="simple">
+<li>https://github.com/ofesseler/braubar-temp.git</li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -216,10 +291,10 @@ then iceweasel will start everytime you start your raspberry. 56</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="raspberry.html" class="btn btn-neutral float-right" title="Raspberry Dokumentation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="structure.html" class="btn btn-neutral float-right" title="Structure" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Welcome to BrauBar’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Hardware.html" class="btn btn-neutral" title="Hardware Requirements" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
