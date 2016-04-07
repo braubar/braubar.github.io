@@ -96,6 +96,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#config-braubar-start-with-supervisor">Config Braubar start with Supervisor</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#arduino">Arduino</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#geting-started">Geting started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#functionality">Functionality</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="structure.html">Structure</a></li>
@@ -148,7 +153,6 @@
   <div class="section" id="installation">
 <span id="installation"></span><h1>Installation<a class="headerlink" href="#installation" title="Link zu dieser Überschrift">¶</a></h1>
 <p>This installation guide will lead you through the whole process of installation and starting up your personal Braubar.</p>
-<p>At first we begin with the installation of the Raspberry Pi and related software.</p>
 <div class="section" id="raspberry-pi">
 <span id="raspberry-pi"></span><h2>Raspberry Pi<a class="headerlink" href="#raspberry-pi" title="Link zu dieser Überschrift">¶</a></h2>
 <p>A common and small distribution is the raspbian image. Download it and copy it to your sd card. For the copy enshure that the device is not mounted. You need to be root.</p>
@@ -276,10 +280,25 @@ ln -s /home/pi/braubar-pi-master/install/dnsmasq.conf /etc/dnsmasq.conf
 <p>reread and restart supervisr and show status
 <code class="docutils literal"><span class="pre">supervisorctl</span> <span class="pre">reread</span> <span class="pre">&amp;&amp;</span> <span class="pre">supervisorctl</span> <span class="pre">reload</span> <span class="pre">&amp;&amp;</span> <span class="pre">supervisorctl</span> <span class="pre">status</span></code></p>
 <p>control log in <code class="docutils literal"><span class="pre">/var/log/supervisor/supervisor.log</span></code></p>
-<p>#arduino</p>
-<ul class="simple">
-<li>https://github.com/ofesseler/braubar-temp.git</li>
-</ul>
+</div>
+</div>
+<div class="section" id="arduino">
+<span id="arduino"></span><h2>Arduino<a class="headerlink" href="#arduino" title="Link zu dieser Überschrift">¶</a></h2>
+<p>In Braubar the Arduino acts as a temperature sensor.</p>
+<div class="section" id="geting-started">
+<span id="geting-started"></span><h3>Geting started<a class="headerlink" href="#geting-started" title="Link zu dieser Überschrift">¶</a></h3>
+<p>It is required to have an running Arduino environment. Then you can either upload the program to your Arduino within Arduino Studio or with the shipped Makefile, which is recommended.
+Before running Make you shoud have a look at the Makefile to ensuhre your Serial Port is mapped to the right <code class="docutils literal"><span class="pre">/dev</span></code>.
+To upload the compiled program to your Arduino run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>make clean &amp;&amp; make &amp;&amp; make upload
+</pre></div>
+</div>
+<p>After running successfully it will request an IP from your DHCP server and start sending broadcast packages all over your local network. To avoid broadcasting, please enter the desired IP for <code class="docutils literal"><span class="pre">IPAddress</span> <span class="pre">server</span></code> in <code class="docutils literal"><span class="pre">braubar_temp.ino</span></code> file.
+Also it is possible to change the port from 50505 to  your wish.</p>
+</div>
+<div class="section" id="functionality">
+<span id="functionality"></span><h3>Functionality<a class="headerlink" href="#functionality" title="Link zu dieser Überschrift">¶</a></h3>
+<p>It sends a package every second with the current temperature value, the id of the sensor and a start and end sequence consistion of <code class="docutils literal"><span class="pre">0xF0FF</span></code> and a end sequence with the same sync bits.</p>
 </div>
 </div>
 </div>
