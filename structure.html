@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Structure &mdash; Braubar 0.1 Dokumentation</title>
+  <title>Projekt Structure &mdash; Braubar 0.1 Dokumentation</title>
   
 
   
@@ -31,7 +31,6 @@
 
   
     <link rel="top" title="Braubar 0.1 Dokumentation" href="index.html"/>
-        <link rel="next" title="Brauen" href="Brauen.html"/>
         <link rel="prev" title="Installation" href="install.html"/> 
 
   
@@ -87,7 +86,7 @@
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Hardware.html">Hardware Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Structure</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Projekt Structure</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#braubar-pi">braubar-pi</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#brewdaemon">Brewdaemon</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#socketserver">Socketserver</a></li>
@@ -98,7 +97,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#eg-pm2-lan">EG-PM2-LAN</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Brauen.html">Brauen</a></li>
 </ul>
 
             
@@ -129,7 +127,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Structure</li>
+    <li>Projekt Structure</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -143,9 +141,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="structure">
-<span id="structure"></span><h1>Structure<a class="headerlink" href="#structure" title="Link zu dieser Überschrift">¶</a></h1>
-<p>Generally braubar is divided into three parts:</p>
+  <div class="section" id="projekt-structure">
+<span id="projekt-structure"></span><h1>Projekt Structure<a class="headerlink" href="#projekt-structure" title="Link zu dieser Überschrift">¶</a></h1>
+<p>Generally Braubar is divided into three parts:</p>
 <ul class="simple">
 <li><strong>braubar-pi</strong>: Controling and displaying information on a Raspberry Pi</li>
 <li><strong>braubar-temp</strong>: Temperature sensor that sends temperature values via UDP on Port 50505</li>
@@ -180,11 +178,15 @@
 </div>
 <div class="section" id="braubar-temp">
 <span id="braubar-temp"></span><h2>braubar-temp<a class="headerlink" href="#braubar-temp" title="Link zu dieser Überschrift">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span></span>+-----------+------------+-----------+---------+---------------+
-| sync-bits | temp value | sensor id | heating | end sync bits |
-+-----------+------------+-----------+---------+---------------+
+<p>As mentioned before, braubar-temp is a ethernet temperature sensor. The attached sensor is a <em>ds18b20</em> sensor for temperature measurement.</p>
+<p>In the current setting the sensor yields a value every 750ms. Therefore it sends at maximum every second a new value, only if the temperature changed.</p>
+<p>The ethernet package looks like the following listing. The start- and end-sync bytes help to ensure that we got a correct package. In the future the end sync should be changed to a CRC to check the payload.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>+------------------+------------+-----------+---------+----------------+
+| start-sync-bytes | temp value | sensor id | heating | end sync bytes |
++------------------+------------+-----------+---------+----------------+
 </pre></div>
 </div>
+<p>Braubar-temp requieres a DHCP-server to obtain a IP-address.</p>
 </div>
 <div class="section" id="eg-pm2-lan">
 <span id="eg-pm2-lan"></span><h2>EG-PM2-LAN<a class="headerlink" href="#eg-pm2-lan" title="Link zu dieser Überschrift">¶</a></h2>
@@ -199,8 +201,6 @@ The responsible script for controlling the power-switch is <code class="docutils
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="Brauen.html" class="btn btn-neutral float-right" title="Brauen" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="install.html" class="btn btn-neutral" title="Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
