@@ -104,7 +104,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="structure.html">Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="raspberry.html">Raspberry Dokumentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Brauen.html">Brauen</a></li>
 </ul>
 
@@ -128,7 +127,7 @@
         <div class="rst-content">
           
 
- 
+
 
 
 
@@ -156,9 +155,9 @@
 <div class="section" id="raspberry-pi">
 <span id="raspberry-pi"></span><h2>Raspberry Pi<a class="headerlink" href="#raspberry-pi" title="Link zu dieser Überschrift">¶</a></h2>
 <p>A common and small distribution is the raspbian image. Download it and copy it to your sd card. For the copy enshure that the device is not mounted. You need to be root.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>dd <span class="nv">bs</span><span class="o">=</span>4M <span class="k">if</span><span class="o">=</span>/tmp/2016-03-18-raspbian-jessie-lie.img <span class="nv">of</span><span class="o">=</span>/dev/mmcblk0 <span class="o">&amp;&amp;</span> sync
-</pre></div>
-</div>
+<pre class="code highlight bash literal-block">
+dd <span class="nv">bs</span><span class="o">=</span>4M <span class="k">if</span><span class="o">=</span>/tmp/2016-03-18-raspbian-jessie-lie.img <span class="nv">of</span><span class="o">=</span>/dev/mmcblk0 <span class="o">&amp;&amp;</span> sync
+</pre>
 <p><code class="docutils literal"><span class="pre">sync</span></code>enshures that all data will be written to the sd card.
 You can find the appropriate image on <a class="reference external" href="https://www.raspberrypi.org/downloads/">https://www.raspberrypi.org/downloads/</a></p>
 <p>After you finished with sync, mount your sd card under <code class="docutils literal"><span class="pre">/mnt</span></code></p>
@@ -189,9 +188,9 @@ static domain_server=8.8.8.8
 </ul>
 <p>Debian 8:
 After boot run a update and then install the required software</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>apt-get update <span class="o">&amp;&amp;</span> apt-get install supervisor python3 python3-pip iceweasel xinit matchbox
-</pre></div>
-</div>
+<pre class="code highlight bash literal-block">
+apt-get update <span class="o">&amp;&amp;</span> apt-get install supervisor python3 python3-pip iceweasel xinit matchbox
+</pre>
 </div>
 <div class="section" id="x-window-system">
 <span id="x-window-system"></span><h3>X Window System<a class="headerlink" href="#x-window-system" title="Link zu dieser Überschrift">¶</a></h3>
@@ -221,39 +220,40 @@ exec /usr/bin/iceweasel http://localhost:5000
 <div class="section" id="braubar-installation">
 <span id="braubar-installation"></span><h3>Braubar installation<a class="headerlink" href="#braubar-installation" title="Link zu dieser Überschrift">¶</a></h3>
 <p>Download braubar-pi to you Pi</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>wget https://github.com/braubar/braubar-pi/archive/master.zip
-</pre></div>
-</div>
+<pre class="code highlight bash literal-block">
+wget https://github.com/braubar/braubar-pi/archive/master.zip
+</pre>
 <p>and unzip it e.g. to your home folder</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>unzip master.zip <span class="o">&amp;&amp;</span> rm master.zip <span class="o">&amp;&amp;</span> <span class="nb">cd</span> braubar-pi-master
-</pre></div>
-</div>
+<pre class="code highlight bash literal-block">
+unzip master.zip <span class="o">&amp;&amp;</span> rm master.zip <span class="o">&amp;&amp;</span> <span class="nb">cd</span> braubar-pi-master
+</pre>
 <p>to install the needed python requirements run as root</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>pip3 install -r requirements.txt
-</pre></div>
-</div>
+<pre class="code highlight bash literal-block">
+pip3 install -r requirements.txt
+</pre>
 </div>
 <div class="section" id="install-and-configure-dnsmasq">
 <span id="install-and-configure-dnsmasq"></span><h3>Install and configure dnsmasq<a class="headerlink" href="#install-and-configure-dnsmasq" title="Link zu dieser Überschrift">¶</a></h3>
 <p>If there is a DHCP Server already running then please change IP settings and ignore this section.</p>
 <p>First install dnsmasq on your system.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>apt-get install dnsmasq
-</pre></div>
-</div>
+<pre class="code highlight bash literal-block">
+apt-get install dnsmasq
+</pre>
 <p>There is a preconfigured file for dnsmasq for Braubar. <code class="docutils literal"><span class="pre">$BRAUBAR_HOME/install/dnsmasq.conf</span></code></p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
+<pre class="code highlight bash literal-block">
+mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
 ln -s /home/pi/braubar-pi-master/install/dnsmasq.conf /etc/dnsmasq.conf
-</pre></div>
-</div>
+</pre>
 </div>
 <div class="section" id="config-braubar-start-with-supervisor">
 <span id="config-braubar-start-with-supervisor"></span><h3>Config Braubar start with Supervisor<a class="headerlink" href="#config-braubar-start-with-supervisor" title="Link zu dieser Überschrift">¶</a></h3>
 <p>Adjust paths to your configuration!</p>
 <p>Create link to config in /etc/supervisor/conf.d/braubar.conf</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>ln -s <span class="nv">$BRAUBAR_HOME</span>/install/braubar.conf /etc/supervisor/conf.d/braubar.conf
-</pre></div>
-</div>
-<div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[program:braubar]</span>
+<pre class="code highlight bash literal-block">
+ln -s <span class="nv">$BRAUBAR_HOME</span>/install/braubar.conf /etc/supervisor/conf.d/braubar.conf
+</pre>
+<pre class="code highlight ini literal-block">
+<span class="k">[program:braubar]</span>
 <span class="na">command</span><span class="o">=</span><span class="s">/home/pi/braubar-pi-master/bin/braubar</span>
 <span class="na">directory</span><span class="o">=</span><span class="s">/home/pi/braubar-pi-master/bin</span>
 <span class="na">loglevel</span><span class="o">=</span><span class="s">warning</span>
@@ -275,8 +275,7 @@ ln -s /home/pi/braubar-pi-master/install/dnsmasq.conf /etc/dnsmasq.conf
 <span class="na">stderr_capture_maxbytes</span><span class="o">=</span><span class="s">1MB</span>
 <span class="na">stderr_events_enabled</span><span class="o">=</span><span class="s">false</span>
 <span class="na">serverurl</span><span class="o">=</span><span class="s">AUTO</span>
-</pre></div>
-</div>
+</pre>
 <p>reread and restart supervisr and show status
 <code class="docutils literal"><span class="pre">supervisorctl</span> <span class="pre">reread</span> <span class="pre">&amp;&amp;</span> <span class="pre">supervisorctl</span> <span class="pre">reload</span> <span class="pre">&amp;&amp;</span> <span class="pre">supervisorctl</span> <span class="pre">status</span></code></p>
 <p>control log in <code class="docutils literal"><span class="pre">/var/log/supervisor/supervisor.log</span></code></p>
